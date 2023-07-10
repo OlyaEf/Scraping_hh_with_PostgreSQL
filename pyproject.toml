@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "scraping-hh-with-postgresql"
+version = "0.1.0"
+description = ""
+authors = ["OlyaEf <efimovskikh@gmail.com>"]
+readme = "README.md"
+packages = [{include = "scraping_hh_with_postgresql"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.31.0"
+psycopg2 = "^2.9.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
