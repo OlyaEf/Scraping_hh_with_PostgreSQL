@@ -82,8 +82,8 @@ class DBManager:
             self.cursor.execute(
                 f'''
                 INSERT INTO vacancies (employer_id, name, requirement, salary_from, salary_to, description, area)
-                VALUES ({vacancy.employer_id}, '{vacancy.name}', '{vacancy.requirement}', '{vacancy.salary_from}', '{vacancy.salary_to}', '{vacancy.description}', '{vacancy.area}')
-                '''
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+                ''', (vacancy.employer_id, vacancy.name, vacancy.requirement, vacancy.salary_from, vacancy.salary_to, vacancy.description, vacancy.area)
             )
 
     def close_connection(self):
