@@ -8,7 +8,6 @@ class Employer:
     id: int
     name: str
     url: str
-    open_vacancies: int
 
 
 @dataclass
@@ -31,6 +30,7 @@ class HeadHunterAPI:
         self.params: Dict[str, Any] = {
             'area': '113',
             'text': keyword,
+            'search_field': 'company_name',
             'per_page': 100,
             'page': 0,
             'only_with_vacancies': True
@@ -43,10 +43,7 @@ class HeadHunterAPI:
         response = requests.get(url, params=self.params, headers=self._headers)
         return response.json()['items']
 
-    def get_vacancy(self, employer_id: int) -> List[Vacancy]:
-        self.params['employer_id'] = employer_id
-        vacancies = self.get_request(self.vacancies_url)
-
+    def created_vacancy(self, vacancies: list):
         self.list_of_vacancies = [
             Vacancy(
                 id=vacancy['id'],
@@ -63,14 +60,23 @@ class HeadHunterAPI:
 
         return self.list_of_vacancies
 
-    def get_employer(self, employer_name: str):
-        self.params['text'] = employer_name
-        employer_json = self.get_request(self.employers_url)[0]
-        employer = Employer(
-                id=employer_json['id'],
-                name=employer_json['name'],
-                url=employer_json['alternate_url'],
-                open_vacancies=employer_json['open_vacancies']
-            )
+    def created_employer(self, vacancies: list):
+        ids = []
+        for employer in vacancies:
+            if employer['employer']['id'] not in ids:
+                ids.append(employer['employer']['id'])
+                self.list_of_employers.append(
+                    Employer(
+                        id=int(employer['employer']['id']),
+                        name=employer['employer']['name'],
+                        url=employer['employer']['alternate_url']
+                    )
+                )
 
-        return employer
+        return self.list_of_employers
+
+    def get_vacancies_by_employer_name(self, employer_name: str):
+        self.params['text'] = employer_name
+        vacancies_json = self.get_request(self.vacancies_url)
+
+        return vacancies_json

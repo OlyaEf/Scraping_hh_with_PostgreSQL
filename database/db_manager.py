@@ -1,12 +1,16 @@
 import psycopg2
 
+from psycopg2.errors import UniqueViolation
 from src.config import config
 
 
 class DBManager:
-    def __init__(self):
+
+    def __init__(self, database_name):
         self.params = config()
+        self.params.update({'dbname': database_name})
         self.conn = psycopg2.connect(**self.params)
+        self.conn.autocommit = True
         self.cursor = self.conn.cursor()
 
     def get_companies_and_vacancies_count(self):
@@ -74,17 +78,33 @@ class DBManager:
         result = self.cursor.fetchall()
         return result
 
-    def insert_vacancy(self, vacancies):
+    def insert_vacancies(self, vacancies):
+
         """
         Добавляем вакансию в БД
         """
         for vacancy in vacancies:
             self.cursor.execute(
-                f'''
+                '''
                 INSERT INTO vacancies (employer_id, name, requirement, salary_from, salary_to, description, area)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                 ''', (vacancy.employer_id, vacancy.name, vacancy.requirement, vacancy.salary_from, vacancy.salary_to, vacancy.description, vacancy.area)
             )
+
+    def insert_employers(self, employers):
+        """
+        Добавляем вакансию в БД
+        """
+        for employer in employers:
+            try:
+                self.cursor.execute(
+                    '''
+                    INSERT INTO employers (id, name, url)
+                    VALUES (%s, %s, %s)
+                    ''', (employer.id, employer.name, employer.url)
+                )
+            except UniqueViolation:
+                pass
 
     def close_connection(self):
         """

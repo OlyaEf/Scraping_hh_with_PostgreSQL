@@ -29,7 +29,7 @@ def main():
     time.sleep(2)  # Задержка в секунду
 
     # Заполнение таблиц данными о выбранных компаниях и их вакансиях
-    load_data(selected_employers)
+    load_data(selected_employers, db_hh)
 
 
 if __name__ == '__main__':

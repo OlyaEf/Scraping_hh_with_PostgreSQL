@@ -25,8 +25,7 @@ def create_tables(database_name, params):
             CREATE TABLE IF NOT EXISTS employers (
                 id SERIAL PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
-                url TEXT,
-                open_vacancies INT
+                url TEXT
             )
         """)
 
