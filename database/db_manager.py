@@ -86,9 +86,9 @@ class DBManager:
         for vacancy in vacancies:
             self.cursor.execute(
                 '''
-                INSERT INTO vacancies (employer_id, name, requirement, salary_from, salary_to, description, area)
-                VALUES (%s, %s, %s, %s, %s, %s, %s)
-                ''', (vacancy.employer_id, vacancy.name, vacancy.requirement, vacancy.salary_from, vacancy.salary_to, vacancy.description, vacancy.area)
+                INSERT INTO vacancies (employer_id, name, requirement, salary_from, salary_to, description, area, alternate_url)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                ''', (vacancy.employer_id, vacancy.name, vacancy.requirement, vacancy.salary_from, vacancy.salary_to, vacancy.description, vacancy.area, vacancy.alternate_url)
             )
 
     def insert_employers(self, employers):

@@ -38,7 +38,8 @@ def create_tables(database_name, params):
                 salary_from VARCHAR(100),
                 salary_to VARCHAR(100),
                 description TEXT,
-                area VARCHAR(255)
+                area VARCHAR(255),
+                alternate_url TEXT
             )
         """)
     conn.close()

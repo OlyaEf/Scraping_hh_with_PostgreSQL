@@ -20,6 +20,7 @@ class Vacancy:
     description: str
     requirement: str
     area: str
+    alternate_url: str
 
 
 class HeadHunterAPI:
@@ -53,7 +54,8 @@ class HeadHunterAPI:
                 salary_to=vacancy['salary']['to'] if vacancy['salary'] else None,
                 description=vacancy['snippet']['responsibility'] if vacancy['snippet']['responsibility'] else 'no data',
                 requirement=vacancy['snippet']['requirement'] if vacancy['snippet']['requirement'] else 'no data',
-                area=vacancy['area']['name']
+                area=vacancy['area']['name'],
+                alternate_url=vacancy['alternate_url']
             )
             for vacancy in vacancies
         ]
