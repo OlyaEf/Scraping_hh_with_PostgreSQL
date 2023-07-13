@@ -32,7 +32,7 @@ class DBManager:
         Получает список всех вакансий с указанием названия компании, названия вакансии, зарплаты и ссылки на вакансию.
         """
         query = '''
-        SELECT employers.name, vacancies.name, vacancies.salary, vacancies.url
+        SELECT employers.name, vacancies.name, vacancies.salary_from, vacancies.alternate_url
         FROM vacancies
         INNER JOIN employers ON employers.id = vacancies.employer_id
         '''
@@ -60,7 +60,7 @@ class DBManager:
         query = '''
         SELECT *
         FROM vacancies
-        WHERE vacancies.salary_from > %s
+        WHERE CAST(vacancies.salary_from AS numeric) > %s
         '''
         self.cursor.execute(query, (avg_salary,))
         result = self.cursor.fetchall()
@@ -111,3 +111,4 @@ class DBManager:
         Закрывает соединение с базой данных.
         """
         return self.conn.close()
+
